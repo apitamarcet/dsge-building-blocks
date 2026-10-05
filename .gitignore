@@ -1,0 +1,14 @@
+# Dynare-generated files
++*/
+*/+*/
+checksum
+*.log
+*.asv
+*.mat
+*/Output/
+*/graphs/
+*.eps
+temp_params.mat
+# OS / editor
+.DS_Store
+*~
