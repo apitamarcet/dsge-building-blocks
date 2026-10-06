@@ -1,45 +1,47 @@
-% NK Model with QE and IOR Policy
+% New Keynesian model with interest on reserves and a QE-compressed loan spread
+% Linear model in deviations from steady state.
+% The central bank sets the interest rate on reserves (IOR) by a Taylor rule.
+% The loan rate relevant for demand equals the IOR plus a spread; central bank
+% bond holdings (QE) compress the spread.
 
-var y pi i_res i_loan;       % Endogenous variables
-varexo eps_s;                % Supply shock
+var y pi i_res i_loan spread B_cb;   % output gap, inflation, IOR, loan rate, loan spread, QE holdings
+varexo eps_s eps_B;                  % supply (cost-push) shock, QE shock
 
-parameters sigma beta kappa phi_pi phi_y m B_cb alpha r_n;
+parameters sigma beta kappa phi_pi phi_y alpha rho_B;
 
-sigma = 1;          % Intertemporal elasticity
-beta = 0.99;        % Discount factor
-kappa = 0.1;        % Phillips curve slope
-phi_pi = 1.5;       % Inflation response
-phi_y = 0.125;      % Output response
-m = 0.5;            % Pre-QE spread
-B_cb = 2.0;         % QE bond holdings
-alpha = 0.2;        % QE spread effect
-r_n = 0.01;         % Natural rate
+sigma  = 1;       % interest sensitivity of demand
+beta   = 0.99;    % discount factor
+kappa  = 0.1;     % Phillips curve slope
+phi_pi = 1.5;     % Taylor rule response to inflation
+phi_y  = 0.125;   % Taylor rule response to the output gap
+alpha  = 0.2;     % spread compression per unit of QE
+rho_B  = 0.9;     % persistence of QE holdings
 
-model;
-    % Loan rate with QE-compressed spread
-    i_loan = i_res + (m - alpha*B_cb);
+model(linear);
+    % Loan rate = IOR + spread
+    i_loan = i_res + spread;
 
-    % IS curve
-    y = y(+1) - sigma*(i_loan - pi(+1) - r_n);
+    % Loan spread compressed by QE
+    spread = -alpha*B_cb;
 
-    % Phillips curve
+    % IS curve: demand depends on the loan rate
+    y = y(+1) - sigma*(i_loan - pi(+1));
+
+    % Phillips curve with cost-push shock
     pi = beta*pi(+1) + kappa*y + eps_s;
 
-    % Taylor rule for IOR
-    i_res = phi_pi*pi + phi_y*y + r_n;
+    % Taylor rule for the interest on reserves
+    i_res = phi_pi*pi + phi_y*y;
+
+    % QE holdings: AR(1)
+    B_cb = rho_B*B_cb(-1) + eps_B;
 end;
 
 shocks;
-    var eps_s = 0.1^2;     % Supply shock (e.g., oil price spike)
-end;
-
-steady_state_model;
-    y = 0;
-    pi = 0;
-    i_res = r_n;
-    i_loan = i_res + (m - alpha*B_cb);
+    var eps_s = 0.1^2;    % supply shock (e.g. oil price spike)
+    var eps_B = 0.1^2;    % QE shock
 end;
 
 steady;
 check;
-stoch_simul(irf=20);
+stoch_simul(irf=20) y pi i_res i_loan spread B_cb;

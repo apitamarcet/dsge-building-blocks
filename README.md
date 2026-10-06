@@ -5,7 +5,7 @@ New Keynesian and real business cycle models change when one adds features one a
 a time. I use them as teaching material for the master tutorials in Advanced
 Macroeconomics and Monetary Policy at Kiel University.
 
-Requirements: MATLAB and Dynare (written with Dynare 5.x). The `rbc/rbc.gmod`
+Requirements: MATLAB and Dynare. All models were last run with MATLAB R2023a and Dynare 5.5. The `rbc/rbc.gmod`
 file additionally needs the [GDSGE](https://www.gdsge.com) toolbox.
 
 ## `nk/` — New Keynesian models
@@ -21,8 +21,8 @@ A sequence that starts from the three-equation model and adds one block per file
 | `baselineNK3.mod` | Labour market + government, lump-sum tax | Nonlinear specification |
 | `baselineNK3b.mod` | Labour market + government, consumption tax | Linear specification |
 | `baselineNK4.mod` | Labour market + government, labour-income tax | |
-| `baselineNK6.mod` | Long-term rate, term premium, QE | Term-premium and QE shocks |
-| `baselineNK6b.mod` | Interest on reserves, QE-compressed loan spread | Supply shock |
+| `baselineNK6.mod` | Long-term rate, term premium, QE | Demand depends on the long rate; QE compresses the term premium; term-premium, QE and natural-rate shocks |
+| `baselineNK6b.mod` | Interest on reserves, QE-compressed loan spread | Taylor rule on the IOR; loan rate = IOR + spread; cost-push and QE shocks |
 | `baselineNK_diff_price_stickiness.mod` | Calvo parameter read from the workspace | Used by the comparison script below |
 
 Scripts:

@@ -8,7 +8,7 @@ var y pi i d s;
 varexo eps_d eps_s;
 
 % Declare parameters
-parameters beta sigma omega kappa phi_pi phi_y rho_d rho_s;
+parameters beta sigma kappa phi_pi phi_y rho_d rho_s;
 
 % Load parameters from MATLAB workspace
 load('temp_params.mat');
